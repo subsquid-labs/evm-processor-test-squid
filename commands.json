@@ -40,10 +40,6 @@
         "description": "Generate TypeORM entities from the schema file",
         "cmd": ["squid-typeorm-codegen"]
       },
-      "typegen": {
-        "description": "Generate data access classes for an ABI file(s) in the ./abi folder",
-        "cmd": ["squid-evm-typegen", "./src/abi", {"glob": "./abi/*.json"}, "--multicall"]
-      },
       "process": {
         "description": "Load .env and start the squid processor",
         "deps": ["build", "migration:apply"],
@@ -75,10 +71,6 @@
         "description": "Bump @subsquid packages to the latest versions",
         "deps": ["check-updates"],
         "cmd": ["npm", "i", "-f"]
-      },
-      "open": {
-        "description": "Open a local browser window",
-        "cmd": ["npx", "--yes", "opener"]
       }
     }
   }

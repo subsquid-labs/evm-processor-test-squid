@@ -1,7 +1,97 @@
-type Burn @entity {
-  id: ID!
-  block: Int!
-  address: String! @index
-  value: BigInt!
-  txHash: String!
+type Transaction @entity {
+	id: ID!
+	block: Int! @index
+	testId: String! @index
+
+	logs: [Int]
+	stateDiffs: [Int]
+
+	transactionIndex: Int!
+	from: String
+	to: String
+	hash: String
+	gas: BigInt
+	gasPrice: BigInt
+	maxFeePerGas: BigInt
+	maxPriorityFeePerGas: BigInt
+	input: String
+	nonce: Int
+	value: BigInt
+	v: BigInt
+	r: String
+	s: String
+	yParity: Int
+	chainId: Int
+	gasUsed: BigInt
+	cumulativeGasUsed: BigInt
+	effectiveGasPrice: BigInt
+	contractAddress: String
+	type: Int
+	status: Int
+	sighash: String
+}
+
+type Log @entity {
+	id: ID!
+	block: Int! @index
+	testId: String! @index
+
+	transaction: Int
+
+	logIndex: Int!
+	transactionIndex: Int!
+	address: String
+	data: String
+	topics: [String]
+	transactionHash: String
+}
+
+type Trace @entity {
+	id: ID!
+	block: Int! @index
+	testId: String! @index
+
+	transaction: Int
+
+	transactionIndex: Int!
+	traceAddress: [Int]!
+	type: String!
+	subtraces: Int!
+	error: String
+	createFrom: String
+	createValue: BigInt
+	createGas: BigInt
+	createInit: String
+	createResultGasUsed: BigInt
+	createResultCode: String
+	createResultAddress: String
+	callFrom: String
+	callTo: String
+	callValue: BigInt
+	callGas: BigInt
+	callSighash: String
+	callInput: String
+	callResultGasUsed: BigInt
+	callResultOutput: String
+	suicideAddress: String
+	suicideRefundAddress: String
+	suicideBalance: BigInt
+	rewardAuthor: String
+	rewardValue: String
+	rewardType: String
+}
+
+type StateDiff @entity {
+	id: ID!
+	block: Int! @index
+	testId: String! @index
+
+	transaction: Int
+
+	transactionIndex: Int!
+	address: String!
+	key: String!
+	kind: String
+	prev: String
+	next: String
 }
