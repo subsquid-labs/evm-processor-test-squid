@@ -17,6 +17,14 @@ export class Log {
     @Column_("text", {nullable: false})
     testId!: string
 
+    @Index_()
+    @Column_("text", {nullable: false})
+    network!: string
+
+    @Index_()
+    @Column_("text", {nullable: false})
+    dataSource!: string
+
     @Column_("int4", {nullable: true})
     transaction!: number | undefined | null
 

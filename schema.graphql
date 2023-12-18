@@ -2,6 +2,8 @@ type Transaction @entity {
 	id: ID!
 	block: Int! @index
 	testId: String! @index
+	network: String! @index
+	dataSource: String! @index
 
 	logs: [Int]
 	stateDiffs: [Int]
@@ -35,6 +37,8 @@ type Log @entity {
 	id: ID!
 	block: Int! @index
 	testId: String! @index
+	network: String! @index
+	dataSource: String! @index
 
 	transaction: Int
 
@@ -50,6 +54,8 @@ type Trace @entity {
 	id: ID!
 	block: Int! @index
 	testId: String! @index
+	network: String! @index
+	dataSource: String! @index
 
 	transaction: Int
 
@@ -85,6 +91,8 @@ type StateDiff @entity {
 	id: ID!
 	block: Int! @index
 	testId: String! @index
+	network: String! @index
+	dataSource: String! @index
 
 	transaction: Int
 
@@ -94,4 +102,31 @@ type StateDiff @entity {
 	kind: String
 	prev: String
 	next: String
+}
+
+type Block @entity {
+	id: ID!
+	testId: String! @index
+	network: String! @index
+	dataSource: String! @index
+
+	hash: String!
+	height: Int! @index
+	parentHash: String!
+	timestamp: Int
+	nonce: String
+	sha3Uncles: String
+	logsBloom: String
+	transactionsRoot: String
+	stateRoot: String
+	receiptsRoot: String
+	mixHash: String
+	miner: String
+	difficulty: BigInt
+	totalDifficulty: BigInt
+	extraData: String
+	size: BigInt
+	gasLimit: BigInt
+	gasUsed: BigInt
+	baseFeePerGas: BigInt
 }
