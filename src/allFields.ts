@@ -69,3 +69,11 @@ export const allBlockHeaderFields = {
 	gasUsed: true,
 	baseFeePerGas: true
 }
+
+export const allFields = {
+	transaction: allTransactionFields,
+	log: allLogFields,
+	trace: allTraceFields,
+	stateDiff: allStateDiffFields,
+	block: allBlockHeaderFields
+}
