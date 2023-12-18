@@ -58,11 +58,12 @@ type Trace @entity {
 	dataSource: String! @index
 
 	transaction: Int
+	parentId: String
+	childrenIds: [String]
 
 	transactionIndex: Int!
 	traceAddress: [Int]!
 	type: String!
-	subtraces: Int!
 	error: String
 	createFrom: String
 	createValue: BigInt

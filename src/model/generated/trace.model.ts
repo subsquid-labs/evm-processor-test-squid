@@ -29,6 +29,12 @@ export class Trace {
     @Column_("int4", {nullable: true})
     transaction!: number | undefined | null
 
+    @Column_("text", {nullable: true})
+    parentId!: string | undefined | null
+
+    @Column_("text", {array: true, nullable: true})
+    childrenIds!: (string | undefined | null)[] | undefined | null
+
     @Column_("int4", {nullable: false})
     transactionIndex!: number
 
@@ -37,9 +43,6 @@ export class Trace {
 
     @Column_("text", {nullable: false})
     type!: string
-
-    @Column_("int4", {nullable: false})
-    subtraces!: number
 
     @Column_("text", {nullable: true})
     error!: string | undefined | null
