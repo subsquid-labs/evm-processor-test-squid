@@ -5,6 +5,7 @@ export interface NetworksConfig { [k: string]: NetworkTestsConfig }
 interface NetworkTestsConfig {
 	v2alias: string
 	rpc: string
+  finalityConfirmations: number
 	tests: TestConditions[]
 }
 

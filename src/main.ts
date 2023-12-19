@@ -1,40 +1,38 @@
+// Executes an individual test config by network name, test index and data source name ('rpc' | 'network')
+
 import {TypeormDatabase} from '@subsquid/typeorm-store'
 import {createLogger} from '@subsquid/logger'
 import {EvmBatchProcessor} from '@subsquid/evm-processor'
 import {lookupArchive} from '@subsquid/archive-registry'
 import {Transaction, Log, Trace, StateDiff, Block} from './model'
+import {assertNotNull} from '@subsquid/util-internal'
 
 import {TestConditions} from './interfaces'
 import networks from './networks'
 import {rpcDescriptionToUrl, makeTraceId} from './utils'
 
-const testsLog = createLogger('processor-tests')
-const db = new TypeormDatabase({supportHotBlocks: false})
 
-for (let [nname, nparams] of Object.entries(networks)) {
-	testsLog.info(`Gathering data for tests on network ${nname}...`)
-	for (let test of nparams.tests) {
-		{
-			testsLog.info(`${test.id}/RPC in progress`)
-			const rpcProc = createProcessorWithRpc(nparams.v2alias)
-			configureProcessor(rpcProc, test)
-			runProcessor(rpcProc, nname, test.id, 'rpc')
-		}
-		{
-			testsLog.info(`${test.id}/Network in progress`)
-			const nwProc = createProcessorWithNetwork(nparams.v2alias)
-			configureProcessor(nwProc, test)
-			runProcessor(nwProc, nname, test.id, 'network')
-		}
-	}
-}
+const network = assertNotNull(process.argv[2])
+const testIndex = parseInt(assertNotNull(process.argv[3]))
+// @ts-expect-error
+const dataSource: 'rpc' | 'network' = assertNotNull( ['rpc', 'network'].includes(process.argv[4]) ? process.argv[4] : undefined )
+
+const networkParams = networks[network]
+const test = networkParams.tests[testIndex]
+const proc = dataSource==='rpc' ? createProcessorWithRpc(network, networkParams.rpc) : createProcessorWithNetwork(networkParams.v2alias)
+configureProcessor(proc, test)
+runProcessor(proc, network, test.id, dataSource)
+
 
 function createProcessorWithNetwork(v2alias: string) {
 	return new EvmBatchProcessor().setArchive(lookupArchive(v2alias as any))
 }
 
-function createProcessorWithRpc(rpc: string) {
-	return new EvmBatchProcessor().setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 10 })
+function createProcessorWithRpc(netName: string, rpc: string) {
+	const fc = networks[netName].finalityConfirmations
+	return new EvmBatchProcessor()
+		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 10 })
+		.setFinalityConfirmation(fc)
 }
 
 function configureProcessor(processor: EvmBatchProcessor, conditions: TestConditions) {
@@ -67,7 +65,7 @@ function runProcessor(
 	testId: string,
 	dataSource: 'network' | 'rpc'
 ) {
-	processor.run(db, async ctx => {
+	processor.run(new TypeormDatabase({supportHotBlocks: false}), async ctx => {
 		const transactions: Transaction[] = []
 		const logs: Log[] = []
 		const traces: Trace[] = []

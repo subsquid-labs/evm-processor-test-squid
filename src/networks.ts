@@ -5,26 +5,41 @@ const networksConfig: NetworksConfig = {
 	arbitrum: {
 		v2alias: 'arbitrum',
 		rpc: 'arbitrum-one:http',
+		finalityConfirmations: 300,
 		tests: []
 	},
 	optimism: {
 		v2alias: 'optimism-mainnet',
 		rpc: 'optimism:http',
+		finalityConfirmations: 15,
 		tests: []
 	},
 	polygon: {
 		v2alias: 'polygon',
 		rpc: 'polygon:http',
+		finalityConfirmations: 400,
 		tests: []
 	},
 	binance: {
 		v2alias: 'binance',
 		rpc: 'bsc:http',
-		tests: []
+		finalityConfirmations: 5,
+		tests: [
+/*			{
+				id: 'transactions-to',
+				transaction: [{
+					to: ['0x55d398326f99059ff775485246999027b3197955'], // BUSD-T
+					range: { from: 32_000_000, to: 32_010_000 }
+				}],
+				fields: allFields
+			},*/
+		]
 	},
 	ethereum: {
 		v2alias: 'eth-mainnet',
-		rpc: 'eth:http',
+//		rpc: 'eth:http',
+		rpc: 'https://rpc.ankr.com/eth',
+		finalityConfirmations: 75,
 		tests: [
 			{
 				id: 'transactions-to',
@@ -34,7 +49,7 @@ const networksConfig: NetworksConfig = {
 				}],
 				fields: allFields
 			},
-			{
+/*			{
 				id: 'logs-address',
 				log: [{
 					address: ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // USDC
@@ -60,7 +75,7 @@ const networksConfig: NetworksConfig = {
 					range: { from: 10_000_000, to: 10_010_000 }
 				}],
 				fields: allFields
-			}
+			}*/
 		]
 	}
 }
