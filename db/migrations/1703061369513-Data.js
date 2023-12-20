@@ -1,5 +1,5 @@
-module.exports = class Data1702927524526 {
-    name = 'Data1702927524526'
+module.exports = class Data1703061369513 {
+    name = 'Data1703061369513'
 
     async up(db) {
         await db.query(`CREATE TABLE "transaction" ("id" character varying NOT NULL, "block" integer NOT NULL, "test_id" text NOT NULL, "network" text NOT NULL, "data_source" text NOT NULL, "logs" integer array, "state_diffs" integer array, "transaction_index" integer NOT NULL, "from" text, "to" text, "hash" text, "gas" numeric, "gas_price" numeric, "max_fee_per_gas" numeric, "max_priority_fee_per_gas" numeric, "input" text, "nonce" integer, "value" numeric, "v" numeric, "r" text, "s" text, "y_parity" integer, "chain_id" integer, "gas_used" numeric, "cumulative_gas_used" numeric, "effective_gas_price" numeric, "contract_address" text, "type" integer, "status" integer, "sighash" text, CONSTRAINT "PK_89eadb93a89810556e1cbcd6ab9" PRIMARY KEY ("id"))`)
@@ -22,7 +22,7 @@ module.exports = class Data1702927524526 {
         await db.query(`CREATE INDEX "IDX_6236781164d69b8229a7bdb40a" ON "state_diff" ("test_id") `)
         await db.query(`CREATE INDEX "IDX_3c745557b66543b5bfdb7c31c3" ON "state_diff" ("network") `)
         await db.query(`CREATE INDEX "IDX_cfe5e4928eadac9ea7b0bba907" ON "state_diff" ("data_source") `)
-        await db.query(`CREATE TABLE "block" ("id" character varying NOT NULL, "test_id" text NOT NULL, "network" text NOT NULL, "data_source" text NOT NULL, "hash" text NOT NULL, "height" integer NOT NULL, "parent_hash" text NOT NULL, "timestamp" integer, "nonce" text, "sha3_uncles" text, "logs_bloom" text, "transactions_root" text, "state_root" text, "receipts_root" text, "mix_hash" text, "miner" text, "difficulty" numeric, "total_difficulty" numeric, "extra_data" text, "size" numeric, "gas_limit" numeric, "gas_used" numeric, "base_fee_per_gas" numeric, CONSTRAINT "PK_d0925763efb591c2e2ffb267572" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "block" ("id" character varying NOT NULL, "test_id" text NOT NULL, "network" text NOT NULL, "data_source" text NOT NULL, "hash" text NOT NULL, "height" integer NOT NULL, "parent_hash" text NOT NULL, "timestamp" numeric, "nonce" text, "sha3_uncles" text, "logs_bloom" text, "transactions_root" text, "state_root" text, "receipts_root" text, "mix_hash" text, "miner" text, "difficulty" numeric, "total_difficulty" numeric, "extra_data" text, "size" numeric, "gas_limit" numeric, "gas_used" numeric, "base_fee_per_gas" numeric, CONSTRAINT "PK_d0925763efb591c2e2ffb267572" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_c4a612aba4195152708e095cec" ON "block" ("test_id") `)
         await db.query(`CREATE INDEX "IDX_ea1ca207644ac464e727327c38" ON "block" ("network") `)
         await db.query(`CREATE INDEX "IDX_082bd0fd6e11945b8f138774aa" ON "block" ("data_source") `)

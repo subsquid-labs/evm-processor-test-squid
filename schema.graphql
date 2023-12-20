@@ -114,7 +114,7 @@ type Block @entity {
 	hash: String!
 	height: Int! @index
 	parentHash: String!
-	timestamp: Int
+	timestamp: BigInt
 	nonce: String
 	sha3Uncles: String
 	logsBloom: String

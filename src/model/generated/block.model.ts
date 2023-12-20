@@ -32,8 +32,8 @@ export class Block {
     @Column_("text", {nullable: false})
     parentHash!: string
 
-    @Column_("int4", {nullable: true})
-    timestamp!: number | undefined | null
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    timestamp!: bigint | undefined | null
 
     @Column_("text", {nullable: true})
     nonce!: string | undefined | null
