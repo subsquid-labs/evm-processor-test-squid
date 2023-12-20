@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@subsquid/archive-registry": "^3.3.0",
-    "@subsquid/evm-processor": "^1.9.0",
+    "@subsquid/evm-processor": "^1.10.0",
     "@subsquid/graphql-server": "^4.3.1",
     "@subsquid/typeorm-migration": "^1.2.2",
     "@subsquid/typeorm-store": "^1.2.6",
