@@ -25,7 +25,7 @@ runProcessor(proc, network, test.id, dataSource)
 
 
 function createProcessorWithNetwork(v2alias: string) {
-	return new EvmBatchProcessor().setArchive(lookupArchive(v2alias as any))
+	return new EvmBatchProcessor().setGateway(lookupArchive(v2alias as any))
 }
 
 function createProcessorWithRpc(netName: string, rpc: string) {
