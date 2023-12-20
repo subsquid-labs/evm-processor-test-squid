@@ -65,14 +65,20 @@ function runProcessor(
 	testId: string,
 	dataSource: 'network' | 'rpc'
 ) {
-	processor.run(new TypeormDatabase({supportHotBlocks: false}), async ctx => {
+	processor.run(new TypeormDatabase({supportHotBlocks: false, stateSchema: `squid_processor_${network}_${testId}_${dataSource}`}), async ctx => {
 		const transactions: Transaction[] = []
 		const logs: Log[] = []
 		const traces: Trace[] = []
 		const stateDiffs: StateDiff[] = []
 		const blocks: Block[] = []
 		for (let block of ctx.blocks) {
-			blocks.push(new Block({ network, dataSource, testId, ...block.header }))
+			blocks.push(new Block({
+				...block.header,
+				network,
+				dataSource,
+				testId,
+				timestamp: BigInt(block.header.timestamp)
+			}))
 			for (let tx of block.transactions) {
 				const logIds = tx.logs.map(l => l.logIndex)
 				const stDiffTxIds = tx.stateDiffs.map(sd => sd.transactionIndex)
