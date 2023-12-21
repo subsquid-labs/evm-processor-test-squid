@@ -5,14 +5,22 @@ description: 'The very first evm squid from manifest  '
 build: 
 deploy:
   addons:
-    postgres: 
+    postgres:
+    rpc:
+      - arbitrum-one:http
+      - optimism:http
+      - polygon:http
+      - bsc:http
+      - eth:http
   processor:
     cmd:
       - sqd
       - process:prod
-    env:
-      RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
   api:
     cmd:
       - sqd
       - serve:prod
+scale:
+  addons:
+    rpc:
+      max-rate: 100rps

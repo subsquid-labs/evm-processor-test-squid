@@ -32,7 +32,7 @@ function createProcessorWithNetwork(v2alias: string) {
 function createProcessorWithRpc(netName: string, rpc: string) {
 	const fc = networks[netName].finalityConfirmations
 	return new EvmBatchProcessor()
-		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 2 })
+		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 100 })
 		.setFinalityConfirmation(fc)
 }
 
