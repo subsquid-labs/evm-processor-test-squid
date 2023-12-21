@@ -16,10 +16,10 @@ const network = assertNotNull(process.argv[2])
 const testIndex = parseInt(assertNotNull(process.argv[3]))
 // @ts-expect-error
 const dataSource: 'rpc' | 'network' = assertNotNull( ['rpc', 'network'].includes(process.argv[4]) ? process.argv[4] : undefined )
-const conditionsPostfix = `${network}_${test.id}_${dataSource}`
 
 const networkParams = networks[network]
 const test = networkParams.tests[testIndex]
+const conditionsPostfix = `${network}_${test.id}_${dataSource}`
 const proc = dataSource==='rpc' ? createProcessorWithRpc(network, networkParams.rpc) : createProcessorWithNetwork(networkParams.v2alias)
 configureProcessor(proc, test)
 runProcessor(proc, network, test.id, dataSource)
