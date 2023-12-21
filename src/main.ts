@@ -16,6 +16,7 @@ const network = assertNotNull(process.argv[2])
 const testIndex = parseInt(assertNotNull(process.argv[3]))
 // @ts-expect-error
 const dataSource: 'rpc' | 'network' = assertNotNull( ['rpc', 'network'].includes(process.argv[4]) ? process.argv[4] : undefined )
+const conditionsPostfix = `${network}_${testId}_${dataSource}`
 
 const networkParams = networks[network]
 const test = networkParams.tests[testIndex]
@@ -31,7 +32,7 @@ function createProcessorWithNetwork(v2alias: string) {
 function createProcessorWithRpc(netName: string, rpc: string) {
 	const fc = networks[netName].finalityConfirmations
 	return new EvmBatchProcessor()
-		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 10 })
+		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 2 })
 		.setFinalityConfirmation(fc)
 }
 
@@ -65,7 +66,7 @@ function runProcessor(
 	testId: string,
 	dataSource: 'network' | 'rpc'
 ) {
-	processor.run(new TypeormDatabase({supportHotBlocks: false, stateSchema: `squid_processor_${network}_${testId}_${dataSource}`}), async ctx => {
+	processor.run(new TypeormDatabase({supportHotBlocks: false, stateSchema: `squid_processor_${conditionsPostfix}`}), async ctx => {
 		const transactions: Transaction[] = []
 		const logs: Log[] = []
 		const traces: Trace[] = []
@@ -74,6 +75,7 @@ function runProcessor(
 		for (let block of ctx.blocks) {
 			blocks.push(new Block({
 				...block.header,
+				id: `${block.header.id}_${conditionsPostfix}`,
 				network,
 				dataSource,
 				testId,
@@ -84,6 +86,7 @@ function runProcessor(
 				const stDiffTxIds = tx.stateDiffs.map(sd => sd.transactionIndex)
 				transactions.push(new Transaction({
 					...tx,
+					id: `${tx.id}_${conditionsPostfix}`,
 					block: block.header.height,
 					testId,
 					network,
@@ -96,6 +99,7 @@ function runProcessor(
 				const txId = log.transaction?.transactionIndex
 				logs.push(new Log({
 					...log,
+					id: `${log.id}_${conditionsPostfix}`,
 					block: block.header.height,
 					testId,
 					network,
@@ -109,7 +113,7 @@ function runProcessor(
 				const parentId = trace.parent && makeTraceId(trace.parent)
 				const childrenIds = trace.children.map(c => makeTraceId(c))
 				const t = new Trace({
-					id,
+					id: `${id}_${conditionsPostfix}`,
 					block: block.header.height,
 					testId,
 					network,
@@ -163,7 +167,7 @@ function runProcessor(
 				const txId = stDiff.transaction?.transactionIndex
 				stateDiffs.push(new StateDiff({
 					...stDiff,
-					id,
+					id: `${id}_${conditionsPostfix}`,
 					block: block.header.height,
 					testId,
 					network,
