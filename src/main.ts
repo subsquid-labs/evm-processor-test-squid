@@ -16,7 +16,7 @@ const network = assertNotNull(process.argv[2])
 const testIndex = parseInt(assertNotNull(process.argv[3]))
 // @ts-expect-error
 const dataSource: 'rpc' | 'network' = assertNotNull( ['rpc', 'network'].includes(process.argv[4]) ? process.argv[4] : undefined )
-const conditionsPostfix = `${network}_${testId}_${dataSource}`
+const conditionsPostfix = `${network}_${test.id}_${dataSource}`
 
 const networkParams = networks[network]
 const test = networkParams.tests[testIndex]
