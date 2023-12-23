@@ -40,6 +40,11 @@
         "description": "Generate TypeORM entities from the schema file",
         "cmd": ["squid-typeorm-codegen"]
       },
+      "check-data": {
+        "description": "Runs src/scripts/checkData.ts",
+        "deps": ["build"],
+        "cmd": ["node", "lib/scripts/checkData.js"]
+      },
       "process": {
         "description": "Load .env and start the squid processor",
         "deps": ["build", "migration:apply"],
