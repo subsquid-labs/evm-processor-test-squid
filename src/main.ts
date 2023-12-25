@@ -109,9 +109,9 @@ function runProcessor(
 			}
 			for (let trace of block.traces) {
 				const txId = trace.transaction?.transactionIndex
-				const id = makeTraceId(trace)
-				const parentId = trace.parent && makeTraceId(trace.parent)
-				const childrenIds = trace.children.map(c => makeTraceId(c))
+				const id = makeTraceId(block.header.height, trace)
+				const parentId = trace.parent && makeTraceId(block.header.height, trace.parent)
+				const childrenIds = trace.children.map(c => makeTraceId(block.header.height, c))
 				const t = new Trace({
 					id: `${id}_${conditionsPostfix}`,
 					block: block.header.height,

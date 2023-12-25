@@ -16,6 +16,6 @@ export function rpcDescriptionToUrl(desc: string): string {
 	throw new Error(`Unrecognized RPC definition`)
 }
 
-export function makeTraceId(trace: {transactionIndex: number, traceAddress: number[]}): string {
-	return `${trace.transactionIndex}-${trace.traceAddress.join('-')}`
+export function makeTraceId(height: number, trace: {transactionIndex: number, traceAddress: number[]}): string {
+	return `${height}-${trace.transactionIndex}-${trace.traceAddress.join('-')}`
 }
