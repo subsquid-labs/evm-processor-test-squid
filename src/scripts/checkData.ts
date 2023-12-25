@@ -15,13 +15,14 @@ const recordIdentificationFields: Record<string, string[]> = {
 }
 
 async function main() {
-	const client = new Client({
-		user: 'postgres',
-		host: 'localhost',
-		database: 'squid',
-		password: 'postgres',
-		port: 23798
-  })
+	if (process.argv.length!=3) {
+		console.log('Please supply the connection string as the only argument')
+		process.exit(1)
+	}
+	const connParams = parseConnectionString(process.argv[2])
+	console.log('Connecting to the following DB:', connParams)
+
+	const client = new Client(connParams)
 	await client.connect()
 
 	const fields = await getAllTablesFields(client, tableNames)
@@ -35,6 +36,16 @@ async function main() {
 	}
 
 	await client.end()
+}
+
+function parseConnectionString(connString: string): {user: string, host: string, database: string, password: string, port: number} {
+	const words = connString.split(' ')
+	const user = words[words.findIndex(w => w=='-U')+1]!
+	const host = words[words.findIndex(w => w=='-h')+1]!
+	const database = words[words.findIndex(w => w=='-d')+1]!
+	const password = words[0]!.split('=')[1]!.replace(/"/g, '')
+	const port = words.includes('-p') ? parseInt(words[words.findIndex(w => w=='-p')+1]!) : 5432
+	return {user, host, database, password, port}
 }
 
 async function getAllTablesFields(client: Client, tables: string[]): Promise<Record<string, string[]>> {
