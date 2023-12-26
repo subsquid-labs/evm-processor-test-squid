@@ -6,6 +6,9 @@ build:
 deploy:
   addons:
     postgres:
+      config:
+        statement_timeout: 12000000
+        log_min_duration_statement: 12000000
     rpc:
       - arbitrum-one:http
       - optimism:http
