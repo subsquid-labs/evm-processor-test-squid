@@ -60,14 +60,15 @@ async function getTableFields(client: Client, table: string): Promise<string[]> 
 
 async function checkTestResults(client: Client, fields: Record<string, string[]>, network: string, testId: string): Promise<void> {
 	for (let table in fields) {
+		const heightField = table==='block' ? 'height' : 'block'
+		const secondField = table==='block' ? 'hash' : 'transaction_index'
+		const orderBy = `order by ${heightField} asc, ${secondField} asc`
 		function selectQuery(what: string, dataSource: 'rpc' | 'network', order: boolean = true): string {
-			const orderField = table==='block' ? 'height' : 'block'
-			const orderBy = order ? `order by ${orderField} asc, id asc` : ''
-			return `select ${what} from ${table} where network='${network}' and test_id='${testId}' and data_source='${dataSource}' ${orderBy}`
+			return `select ${what} from ${table} where network='${network}' and test_id='${testId}' and data_source='${dataSource}' ${order ? orderBy : ''}`
 		}
 		function comparisonQuery(what: string, from: 'rpc' | 'network'): string {
 			const to: 'rpc' | 'network' = from==='rpc' ? 'network' : 'rpc'
-			return `select * from (${selectQuery(what, from)}) as rpc_query except select * from (${selectQuery(what, to)}) as network_query`
+			return `select * from (${selectQuery(what, from)}) as rpc_query except select * from (${selectQuery(what, to)}) as network_query ${orderBy}`
 		}
 		async function compare(what: string): Promise<{rpc2network: QueryResultRow[], network2rpc: QueryResultRow[]} | null> {
 			const rpc2network = (await client.query(comparisonQuery(what, 'rpc'))).rows
