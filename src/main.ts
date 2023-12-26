@@ -26,7 +26,9 @@ runProcessor(proc, network, test.id, dataSource)
 
 
 function createProcessorWithNetwork(v2alias: string) {
-	return new EvmBatchProcessor().setGateway(lookupArchive(v2alias as any))
+	return new EvmBatchProcessor()
+		.setGateway(lookupArchive(v2alias as any))
+		.includeAllBlocks()
 }
 
 function createProcessorWithRpc(netName: string, rpc: string) {
@@ -34,6 +36,7 @@ function createProcessorWithRpc(netName: string, rpc: string) {
 	return new EvmBatchProcessor()
 		.setRpcEndpoint({ url: rpcDescriptionToUrl(rpc), rateLimit: 100 })
 		.setFinalityConfirmation(fc)
+		.includeAllBlocks()
 }
 
 function configureProcessor(processor: EvmBatchProcessor, conditions: TestConditions) {
