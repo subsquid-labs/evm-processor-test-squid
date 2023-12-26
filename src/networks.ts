@@ -46,7 +46,7 @@ const networksConfig: NetworksConfig = {
 				}],
 				fields: allFields
 			},
-			{
+			/*{
 				id: 'trace-call-to',
 				trace: [{
 					type: ['call'],
@@ -64,7 +64,7 @@ const networksConfig: NetworksConfig = {
 					range: { from: 60_000_000, to: 60_001_000 }
 				}],
 				fields: allFields
-			}
+			}*/
 		]
 	},
 	polygon: {
