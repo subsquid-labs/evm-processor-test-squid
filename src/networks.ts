@@ -1,8 +1,14 @@
+import {assertNotNull} from '@subsquid/util-internal'
+
 import {NetworksConfig} from './interfaces'
 import {allFields} from './allFields'
 
+const startingBlock = 18936000
+const blocksPerTest = 1000
+const blocksPerGap = 100
+
 const networksConfig: NetworksConfig = {
-	arbitrum: {
+/*	arbitrum: {
 		v2alias: 'arbitrum',
 		rpc: 'arbitrum-one:http',
 		finalityConfirmations: 300,
@@ -46,7 +52,7 @@ const networksConfig: NetworksConfig = {
 				}],
 				fields: allFields
 			},
-			/*{
+			{
 				id: 'trace-call-to',
 				trace: [{
 					type: ['call'],
@@ -64,7 +70,7 @@ const networksConfig: NetworksConfig = {
 					range: { from: 60_000_000, to: 60_001_000 }
 				}],
 				fields: allFields
-			}*/
+			}
 		]
 	},
 	polygon: {
@@ -131,17 +137,20 @@ const networksConfig: NetworksConfig = {
 				fields: allFields
 			}
 		]
-	},
+	},*/
 	ethereum: {
 		v2alias: 'eth-mainnet',
-		rpc: 'eth:http',
+		rpc: assertNotNull(process.env.ETH_WSS_ENDPOINT),
 		finalityConfirmations: 75,
 		tests: [
 			{
 				id: 'transactions-to',
 				transaction: [{
 					to: ['0xdAC17F958D2ee523a2206206994597C13D831ec7'], // USDT
-					range: { from: 10_000_000, to: 10_001_000 }
+					range: {
+						from: startingBlock,
+						to: startingBlock+blocksPerTest
+					}
 				}],
 				fields: allFields
 			},
@@ -149,7 +158,10 @@ const networksConfig: NetworksConfig = {
 				id: 'logs-address',
 				log: [{
 					address: ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // USDC
-					range: {from: 10_000_000, to: 10_001_000}
+					range: {
+						from: startingBlock+blocksPerTest+blocksPerGap,
+						to: startingBlock+blocksPerTest*2+blocksPerGap
+					}
 				}],
 				fields: allFields
 			},
@@ -159,7 +171,10 @@ const networksConfig: NetworksConfig = {
 					type: ['call'],
 					callTo: ['0xE592427A0AEce92De3Edee1F18E0157C05861564'], // Uniswap v3 router
 					transaction: true,
-					range: {from: 15_000_000, to: 15_001_000}
+					range: {
+						from: startingBlock+blocksPerTest*2+blocksPerGap*2,
+						to: startingBlock+blocksPerTest*3+blocksPerGap*2
+					}
 				}],
 				fields: allFields
 			},
@@ -168,7 +183,10 @@ const networksConfig: NetworksConfig = {
 				stateDiff: [{
 					address: ['0xdAC17F958D2ee523a2206206994597C13D831ec7'], // USDT
 					transaction: true,
-					range: { from: 10_000_000, to: 10_001_000 }
+					range: {
+						from: startingBlock+blocksPerTest*3+blocksPerGap*3,
+						to: startingBlock+blocksPerTest*4+blocksPerGap*3
+					}
 				}],
 				fields: allFields
 			}
