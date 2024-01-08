@@ -128,6 +128,13 @@ async function checkTestResults(client: Client, fields: Record<string, string[]>
 						}
 					}
 				}
+				else {
+					console.log(`Record identification fields differ!`)
+					console.log(`Sample of ${recordIdentificationFieldsComparison.rpc2network.length} RPC-only rows:`)
+					console.table(recordIdentificationFieldsComparison.rpc2network.slice(0, 10))
+					console.log(`Sample of ${recordIdentificationFieldsComparison.network2rpc.length} network-only rows:`)
+					console.table(recordIdentificationFieldsComparison.network2rpc.slice(0, 10))
+				}
 			}
 			console.log('\n')
 		}
