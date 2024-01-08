@@ -43,7 +43,7 @@
       "check-data": {
         "description": "Runs src/scripts/checkData.ts",
         "deps": ["build"],
-        "cmd": ["node", "lib/scripts/checkData.js"]
+        "cmd": ["node", "--require=dotenv/config", "lib/scripts/checkData.js"]
       },
       "process": {
         "description": "Load .env and start the squid processor",
